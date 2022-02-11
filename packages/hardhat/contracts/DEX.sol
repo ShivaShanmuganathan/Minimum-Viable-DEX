@@ -53,6 +53,32 @@ contract DEX {
     return eth_bought;
   }
 
+  function deposit() public payable returns (uint256) {
+  
+    uint256 eth_reserve = address(this).balance - (msg.value);
+    uint256 token_reserve = token.balanceOf(address(this));
+    uint256 token_amount = (msg.value * (token_reserve) / eth_reserve) + (1);
+    uint256 liquidity_minted = msg.value * (totalLiquidity) / eth_reserve;
+    liquidity[msg.sender] = liquidity[msg.sender] + (liquidity_minted);
+    totalLiquidity = totalLiquidity + (liquidity_minted);
+    require(token.transferFrom(msg.sender, address(this), token_amount));
+    return liquidity_minted;
+  
+  }
+
+function withdraw(uint256 amount) public returns (uint256, uint256) {
+  
+  uint256 token_reserve = token.balanceOf(address(this));
+  uint256 eth_amount = amount * (address(this).balance) / totalLiquidity;
+  uint256 token_amount = amount * (token_reserve) / totalLiquidity;
+  liquidity[msg.sender] = liquidity[msg.sender] - (eth_amount);
+  totalLiquidity = totalLiquidity - (eth_amount);
+  payable(msg.sender).transfer(eth_amount);
+  require(token.transfer(msg.sender, token_amount));
+  return (eth_amount, token_amount);
+  
+  }
+
   
 
 }
