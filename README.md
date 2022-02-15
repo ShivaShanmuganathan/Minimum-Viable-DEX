@@ -1,6 +1,6 @@
 # 🏗 scaffold-eth | 🏰 BuidlGuidl
 
-[Live Site] (gullible-snails.surge.sh)
+## [Live Site](gullible-snails.surge.sh)
 
 ## 🚩 Challenge 5: Minimum Viable Exchange
 
